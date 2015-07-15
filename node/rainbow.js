@@ -1,15 +1,18 @@
 #!/usr/bin/env node
 
+var OPC = require('./opc');
+
 var Rainbow = function(opc, numLeds)
 {
     this.opc = opc;
+    this.OPC = OPC;
     this.numLeds = numLeds;
 
     _this = this;
 };
 
 Rainbow.prototype.go = function() {
-  return setInterval(this._draw, 100);
+  return setInterval(this._draw, 50);
 }
 
 Rainbow.prototype._draw = function() {
