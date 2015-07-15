@@ -6,7 +6,7 @@ var Canvas = require('canvas'),
 
 console.log("Trying to read file");
 
-fs.readFile(__dirname + '../images/flames.jpg', function(err, flames){
+fs.readFile('../images/flames.jpg', function(err, flames){
   if (err) throw err;
   img = new Image;
   img.src = flames;
