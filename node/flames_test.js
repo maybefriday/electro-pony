@@ -1,28 +1,36 @@
-var OPC = new require('./opc');
-var opc = new OPC(process.argv[2] || 'localhost', 7890);
+var OPC = new require('./opc'),
+    opc = new OPC('localhost', 7890),
+    numStrips = 3,
+    ledsPerStrip = 60;
 
 var Canvas = require('canvas'),
     Image = Canvas.Image,
     canvas = new Canvas(800, 400),
     context = canvas.getContext('2d'),
-    fs = require('fs');
+    fs = require('fs'),
+    img = new Image;
 
 
-var interval = (canvas.width - 100) / 60,
-    startingPoint = 50,
-    strip1Y = canvas.height / 4,
-    strip2Y = canvas.height * 2 / 4,
-    strip3Y = canvas.height * 3 / 4;
+var startingX = 50,
+    interval = (canvas.width - (startingX * 2)) / ledsPerStrip,
+    stripYs = [];
 
-console.log("Trying to read file");
+// Assuming LED strips are laid out horizontally, calculate
+// Y values of each strip
 
-var img = new Image;
+for (var i = 0; i < numStrips; i++) {
+  stripYs[i] = canvas.height * (i+1) / (numStrips+1);
+}
+
+// Load flame image
 
 fs.readFile('../images/flames.jpg', function(err, flames){
   if (err) throw err;
   img.src = flames;
   console.log("Successfully read image!");
 });
+
+// Main loop
 
 function draw() {
   var imHeight = img.height * canvas.width / img.width;
@@ -37,20 +45,19 @@ function draw() {
   context.drawImage(img, 0, imageY, canvas.width, imHeight);
   context.drawImage(img, 0, imageY + imHeight, canvas.width, imHeight);
 
-  for (var i = 0; i < 60; i++) {
-    var x =  startingPoint + (i * interval);
-    //console.log("Getting pixel color at: " + x + ", " + centerY);
-    var rgb1 = context.getImageData(x, strip1Y, 1, 1).data;
-    var rgb2 = context.getImageData(x, strip2Y, 1, 1).data;
-    var rgb3 = context.getImageData(x, strip3Y, 1, 1).data;
-    //console.log("Setting pixel to: " + rgb[0] + ", " + rgb[1] + ", " + rgb[2]);
-    opc.setPixel(i, rgb1[0], rgb1[1], rgb1[2]);
-    opc.setPixel(i + 60, rgb2[0], rgb2[1], rgb2[2]);
-    opc.setPixel(i + 120, rgb3[0], rgb3[1], rgb3[2]);
+  // Get RGB data for each LED
+
+  for (var i = 0; i < ledsPerStrip; i++) {
+    var x =  startingX + (i * interval);
+
+    for (var j = 0; j < numStrips; j++) {
+      var rgb = context.getImageData(x, stripYs[j], 1, 1).data;
+      opc.setPixel(i + (ledsPerStrip * j), rgb[0], rgb[1], rgb[2]);
+    }
 
   }
 
   opc.writePixels();
 }
 
-setInterval(draw, 50);
+setInterval(draw, 100);
