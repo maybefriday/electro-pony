@@ -19,9 +19,9 @@ Rainbow.prototype._draw = function() {
 
     for (var i = 0; i < _this.numLeds; i++) {
       var d = new Date();
-      var hue = ((d.getTime() * 0.05 + i * 2.0) % 100) / 100.0;
+      var hue = ((d.getTime() * 0.03 + i * 2.0) % 100) / 100.0;
       //console.log("setting hue to : " + hue);
-      rgb = OPC.hsv(hue, 0.5, 0.8);
+      rgb = OPC.hsv(hue, 0.4, 0.8);
       _this.opc.setPixel(i, rgb[0], rgb[1], rgb[2]);
     }
 
