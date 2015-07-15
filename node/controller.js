@@ -56,8 +56,8 @@ function showDarkness(err, state) {
 }
 
 function cancelCurrentEffect() {
-  console.log("canceling current effect with interval id " + intervalId);
   if (intervalId != -1)
+    console.log("canceling current effect with interval id " + intervalId);
     clearInterval(intervalId);
 }
 
