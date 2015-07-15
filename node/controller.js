@@ -10,9 +10,11 @@ var OPC = new require('./opc'),
     button2 = new GPIO(23, 'in', 'both'),
     button3 = new GPIO(22, 'in', 'both'),
     button4 = new GPIO(18, 'in', 'both'),
+    spawn = require('child_process').spawn,
     intervalId = -1;
     numStrips = 3,
-    ledsPerStrip = 60;
+    ledsPerStrip = 60,
+    proc;
 
 button1.watch(showFireplace);
 button2.watch(showRainbow);
@@ -40,6 +42,21 @@ function showRainbow(err, state) {
 function playSong(err, state) {
   if (state == 1) {
     console.log("Playing a song.");
+
+    proc = spawn('omxplayer -o local ../sounds/girl-talk.mp3');
+
+    proc.stdout.on('data', function (data) {
+      console.log('stdout: ' + data);
+    });
+
+    proc.stderr.on('data', function (data) {
+      console.log('stderr: ' + data);
+    });
+
+    proc.on('close', function (code) {
+      console.log('child process exited with code ' + code);
+    });
+
   }
 }
 
@@ -56,8 +73,14 @@ function showDarkness(err, state) {
 }
 
 function cancelCurrentEffect() {
-  if (intervalId != -1)
+  if (intervalId != -1) {
     console.log("canceling current effect with interval id " + intervalId);
     clearInterval(intervalId);
+  }
+  if (proc != null) {
+    proc.kill('SIGINT');
+    proc = null;
+  }
+
 }
 
