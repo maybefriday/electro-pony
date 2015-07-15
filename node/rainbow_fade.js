@@ -6,6 +6,7 @@
 var OPC = new require('./opc');
 var model = OPC.loadModel('../layouts/strip64.json');
 var opc = new OPC(process.argv[2] || 'localhost', 7890);
+var GpioStream = require('gpio-stream');
 
 var Canvas = require('canvas'),
     Image = Canvas.Image,
@@ -15,8 +16,7 @@ var Canvas = require('canvas'),
 // Buttons: 18, 22, 23, 24
 // LED: 25
 
-var GpioStream = require('gpio-stream'),
-    button1 = GpioStream.readable(18);
+var button1 = GpioStream.readable(18);
     //button2 = GpioStream.readable(22),
     //button3 = GpioStream.readable(23),
     //button4 = GpioStream.readable(24);
