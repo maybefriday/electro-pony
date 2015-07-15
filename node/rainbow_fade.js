@@ -19,7 +19,7 @@ function draw() {
       var d = new Date();
       var hue = ((d.getTime() * 0.01 + i * 2.0) % 100) / 100;
       rgb = OPC.hsv(hue, 0.2, brightness);
-      opc.setPixel(i, Math.round(rgb[0]), Math.round(rgb[1]), Math.round(rgb[2]));
+      opc.setPixel(i, rgb[0], rgb[1], rgb[2]);
     }
 
     opc.writePixels();

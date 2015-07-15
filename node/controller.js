@@ -4,41 +4,44 @@
 var OPC = new require('./opc'),
     opc = new OPC('localhost', 7890),
     GPIO = require('onoff').Gpio,
+    Fireplace = new Fireplace('./fireplace'),
+    Rainbow = new Rainbow('./rainbow'),
     button1 = new GPIO(24, 'in', 'both'),
     button2 = new GPIO(23, 'in', 'both'),
     button3 = new GPIO(22, 'in', 'both'),
     button4 = new GPIO(18, 'in', 'both'),
     intervalId = -1;
-
-button1.watch(fireplace);
-button2.watch(rainbows);
-button3.watch(sing);
-button4.watch(darkness);
-
-var numStrips = 3,
+    numStrips = 3,
     ledsPerStrip = 60;
 
-function fireplace(err, state) {
+button1.watch(showFireplace);
+button2.watch(showRainbow);
+button3.watch(playSong);
+button4.watch(showDarkness);
+
+function showFireplace(err, state) {
   if (state == 1) {
     cancelCurrentEffect();
     console.log("Turning on fireplace!");
+    var fireplace = new Fireplace(opc, numStrips, ledsPerStrip);
+    intervalId = fireplace.go();
   }
 }
 
-function rainbows(err, state) {
+function showRainbow(err, state) {
   if (state == 1) {
     cancelCurrentEffect();
     console.log("Turning on rainbows!");
   }
 }
 
-function sing(err, state) {
+function playSong(err, state) {
   if (state == 1) {
     console.log("Playing a song.");
   }
 }
 
-function darkness(err, state) {
+function showDarkness(err, state) {
   if (state == 1) {
     console.log("Turn off all the things.");
     cancelCurrentEffect();
@@ -51,11 +54,8 @@ function darkness(err, state) {
 }
 
 function cancelCurrentEffect() {
+  console.log("canceling current effect");
   if (intervalId != -1)
     clearInterval(intervalId);
 }
 
-
-function draw() {
-
-}
