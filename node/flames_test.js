@@ -27,7 +27,6 @@ for (var i = 0; i < numStrips; i++) {
 fs.readFile('../images/flames.jpg', function(err, flames){
   if (err) throw err;
   img.src = flames;
-  console.log("Successfully read image!");
 });
 
 // Main loop
@@ -38,8 +37,6 @@ function draw() {
   // Scroll down slowly, and wrap around
   var speed = 0.05;
   var imageY = ((new Date()).getTime() * -speed) % imHeight;
-
-  //context.drawImage(img, 0, 0, img.width, img.height);
 
   // Use two copies of the image, so it seems to repeat infinitely
   context.drawImage(img, 0, imageY, canvas.width, imHeight);
