@@ -43,14 +43,7 @@ function playSong(err, state) {
   if (state == 1) {
     console.log("Playing a song.");
 
-    child = spawn('omxplayer -o local /home/pi/electro-pony/sounds/girl-talk.mp3',
-      function (error, stdout, stderr) {
-        console.log('stdout: ' + stdout);
-        console.log('stderr: ' + stderr);
-        if (error !== null) {
-          console.log('spawn error: ' + error);
-        }
-    });
+    child = spawn('omxplayer -o local /home/pi/electro-pony/sounds/girl-talk.mp3');
   }
 }
 
