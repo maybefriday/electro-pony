@@ -19,7 +19,16 @@ var OPC = new require('./opc'),
 button1.watch(showFireplace);
 button2.watch(showRainbow);
 button3.watch(playSong);
-button4.watch(showDarkness);
+button4.watch(shutItDown);
+
+testSequence();
+
+function testSequence() {
+  for (var i = 0; i < (numStrips * ledsPerStrip); i++) {
+    opc.setPixel(i, 255, 255, 255);
+  }
+  opc.writePixels();
+}
 
 function showFireplace(err, state) {
   if (state == 1) {
@@ -43,6 +52,8 @@ function playSong(err, state) {
   if (state == 1) {
     console.log("Playing a song.");
 
+    killMusic();
+
     child = exec('omxplayer -o local /home/pi/electro-pony/sounds/girl-talk.mp3',
       function (error, stdout, stderr) {
         console.log('stdout: ' + stdout);
@@ -55,30 +66,38 @@ function playSong(err, state) {
   }
 }
 
-function showDarkness(err, state) {
+function shutItDown(err, state) {
   if (state == 1) {
     console.log("Turn off all the things.");
     cancelCurrentEffect();
 
-    console.log("Turning off LEDs.");
+    killLights();
+    killMusic();
+  }
+}
 
-    for (var i = 0; i < (numStrips * ledsPerStrip); i++) {
-      opc.setPixel(i, 0, 0, 0);
-    }
-    opc.writePixels();
+function killLights() {
+  console.log("Turning off LEDs.");
 
-    if (child != null) {
-      console.log("Turning off song process.");
-      exec('kill ' + child.pid,
-        function (error, stdout, stderr) {
-          console.log('stdout: ' + stdout);
-          console.log('stderr: ' + stderr);
-          if (error !== null) {
-            console.log('exec error: ' + error);
-          }
-      });
-      child = null;
-    }
+  for (var i = 0; i < (numStrips * ledsPerStrip); i++) {
+    opc.setPixel(i, 0, 0, 0);
+  }
+  opc.writePixels();
+
+}
+
+function killMusic() {
+  if (child != null) {
+    console.log("Turning off song process with pid " + child.pid);
+    exec('kill ' + child.pid,
+      function (error, stdout, stderr) {
+        console.log('stdout: ' + stdout);
+        console.log('stderr: ' + stderr);
+        if (error !== null) {
+          console.log('exec error: ' + error);
+        }
+    });
+    child = null;
   }
 }
 
