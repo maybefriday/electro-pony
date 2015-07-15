@@ -3,6 +3,7 @@
 
 var OPC = new require('./opc'),
     opc = new OPC('localhost', 7890),
+    GPIO = require('onoff').Gpio,
     button1 = new GPIO(24, 'in', 'both'),
     button2 = new GPIO(22, 'in', 'both'),
     button3 = new GPIO(23, 'in', 'both'),
