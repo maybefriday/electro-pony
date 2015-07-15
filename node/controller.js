@@ -59,12 +59,15 @@ function showDarkness(err, state) {
     console.log("Turn off all the things.");
     cancelCurrentEffect();
 
+    console.log("Turning off LEDs.");
+
     for (var i = 0; i < (numStrips * ledsPerStrip); i++) {
       opc.setPixel(i, 0, 0, 0);
     }
     opc.writePixels();
 
     if (child != null) {
+      console.log("Turning off song process.");
       child.kill();
       child = null;
     }
