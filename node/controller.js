@@ -24,6 +24,7 @@ button4.watch(shutItDown);
 testSequence();
 
 function testSequence() {
+  console.log("trying LED test sequence");
   for (var i = 0; i < (numStrips * ledsPerStrip); i++) {
     opc.setPixel(i, 255, 255, 255);
   }
