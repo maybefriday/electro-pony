@@ -8,7 +8,8 @@
     "midi": "~0.9.3",
     "minimist": "~0.0.8",
     "simplex-noise": "~2.1.1",
-    "paper": "~0.9.23"
+    "paper": "~0.9.23",
+    "canvas": "~1.2.3"
   },
   "private": true
 }

@@ -7,6 +7,38 @@ var OPC = new require('./opc');
 var model = OPC.loadModel('../layouts/strip64.json');
 var opc = new OPC(process.argv[2] || 'localhost', 7890);
 
+var Canvas = require('canvas'),
+    Image = Canvas.Image,
+    canvas = new Canvas(800, 400),
+    ctx = canvas.getContext('2d');
+
+// Buttons: 18, 22, 23, 24
+// LED: 25
+
+var GpioStream = require('gpio-stream'),
+    button1 = GpioStream.readable(18),
+    //button2 = GpioStream.readable(22),
+    //button3 = GpioStream.readable(23),
+    //button4 = GpioStream.readable(24);
+
+// pipe the button presses to stdout
+button1.pipe(process.stdout);
+//button2.pipe(process.stdout);
+//button3.pipe(process.stdout);
+//button4.pipe(process.stdout);
+
+console.log("Trying to read file");
+
+fs.readFile(__dirname + '../images/flames.jpg', function(err, flames){
+  if (err) throw err;
+  img = new Image;
+  img.src = flames;
+  ctx.drawImage(img, 0, 0, img.width, img.height);
+  console.log("Wrote image to canvas!");
+  console.log("Buffer size: " + canvas.toBuffer().length);
+
+});
+
 function draw() {
 
     for (var i = 0; i < 192; i++) {
@@ -20,37 +52,18 @@ function draw() {
 
 }
 
-var Dot = function(position, radius, color) {
+function updateColor(err, state) {
 
-    var circle = new Path.Circle({
-        center: position,
-        radius: radius,
-    });
+  // check the state of the button
+  // 1 == pressed, 0 == not pressed
+  if(state == 1) {
+    // turn LED on
+    led.writeSync(1);
+  } else {
+    // turn LED off
+    led.writeSync(0);
+  }
 
-    circle.fillColor = {
-        gradient: {
-            stops: [['white', 0], [color, 0.6], ['black', 1]],
-            radial: true
-        },
-        origin: circle.position,
-        destination: circle.bounds.rightCenter
-    };
-
-    // Store a rasterized version of this path, for speed
-    this.path = circle.rasterize();
-    circle.remove();
-
-    // Treat dots as lamps that make the scene brighter wherever they are
-    this.path.blendMode = 'add';
-    this.path.opacity = 0.9;
-
-    // Dots have velocity, so they overshoot and bounce around as they move
-    this.velocity = new Point(0, 0);
-    this.target = position;
-
-    // Physical parameters
-    this.acceleration = 0.2;
-    this.damping = 0.3;
 }
 
 setInterval(draw, 100);
