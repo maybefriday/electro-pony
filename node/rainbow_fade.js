@@ -16,7 +16,7 @@ var Canvas = require('canvas'),
 // LED: 25
 
 var GpioStream = require('gpio-stream'),
-    button1 = GpioStream.readable(18),
+    button1 = GpioStream.readable(18);
     //button2 = GpioStream.readable(22),
     //button3 = GpioStream.readable(23),
     //button4 = GpioStream.readable(24);
