@@ -10,11 +10,11 @@ var OPC = new require('./opc'),
     button2 = new GPIO(23, 'in', 'both'),
     button3 = new GPIO(22, 'in', 'both'),
     button4 = new GPIO(18, 'in', 'both'),
-    spawn = require('child_process').spawn,
+    exec = require('child_process').exec,
     intervalId = -1;
     numStrips = 3,
     ledsPerStrip = 60,
-    proc = null;
+    child = null;
 
 button1.watch(showFireplace);
 button2.watch(showRainbow);
@@ -43,20 +43,14 @@ function playSong(err, state) {
   if (state == 1) {
     console.log("Playing a song.");
 
-    proc = spawn('omxplayer -o local /home/pi/electro-pony/sounds/girl-talk.mp3');
-
-    proc.stdout.on('data', function (data) {
-      console.log('stdout: ' + data);
+    child = exec('omxplayer -o local /home/pi/electro-pony/sounds/girl-talk.mp3',
+      function (error, stdout, stderr) {
+        console.log('stdout: ' + stdout);
+        console.log('stderr: ' + stderr);
+        if (error !== null) {
+          console.log('exec error: ' + error);
+        }
     });
-
-    proc.stderr.on('data', function (data) {
-      console.log('stderr: ' + data);
-    });
-
-    proc.on('close', function (code) {
-      console.log('child process exited with code ' + code);
-    });
-
   }
 }
 
@@ -69,6 +63,11 @@ function showDarkness(err, state) {
       opc.setPixel(i, 0, 0, 0);
     }
     opc.writePixels();
+
+    if (child != null) {
+      child.kill();
+      child = null;
+    }
   }
 }
 
@@ -76,10 +75,6 @@ function cancelCurrentEffect() {
   if (intervalId != -1) {
     console.log("canceling current effect with interval id " + intervalId);
     clearInterval(intervalId);
-  }
-  if (proc != null) {
-    proc.kill('SIGINT');
-    proc = null;
   }
 
 }
