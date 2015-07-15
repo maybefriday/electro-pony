@@ -10,7 +10,7 @@ var Canvas = require('canvas'),
 
 var interval = (canvas.width - 100) / 60,
     startingPoint = 50,
-    y = canvas.height / 2;
+    centerY = canvas.height / 2;
 
 console.log("Trying to read file");
 
@@ -27,18 +27,18 @@ function draw() {
 
   // Scroll down slowly, and wrap around
   var speed = 0.05;
-  var y = ((new Date()).getTime() * -speed) % imHeight;
+  var imageY = ((new Date()).getTime() * -speed) % imHeight;
 
   //context.drawImage(img, 0, 0, img.width, img.height);
 
   // Use two copies of the image, so it seems to repeat infinitely
-  context.drawImage(img, 0, y, canvas.width, imHeight);
-  context.drawImage(img, 0, y + imHeight, canvas.width, imHeight);
+  context.drawImage(img, 0, imageY, canvas.width, imHeight);
+  context.drawImage(img, 0, imageY + imHeight, canvas.width, imHeight);
 
   for (var i = 0; i < 60; i++) {
     var x =  startingPoint + (i * interval);
-    console.log("Getting pixel color at: " + x + ", " + y);
-    var rgb = context.getImageData(x, y, 1, 1);
+    console.log("Getting pixel color at: " + x + ", " + centerY);
+    var rgb = context.getImageData(x, centerY, 1, 1);
     console.log("Setting pixel to: " + rgb.toString());
     opc.setPixel(i, rgb[0], rgb[1], rgb[2]);
   }
