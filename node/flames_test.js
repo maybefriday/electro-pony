@@ -38,7 +38,7 @@ function draw() {
   for (var i = 0; i < 60; i++) {
     var x =  startingPoint + (i * interval);
     console.log("Getting pixel color at: " + x + ", " + centerY);
-    var rgb = context.getImageData(x, centerY, 1, 1);
+    var rgb = context.getImageData(x, centerY, 1, 1).data;
     console.log("Setting pixel to: " + rgb.toString());
     opc.setPixel(i, rgb[0], rgb[1], rgb[2]);
   }
