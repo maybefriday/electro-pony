@@ -43,7 +43,7 @@ function playSong(err, state) {
   if (state == 1) {
     console.log("Playing a song.");
 
-    proc = spawn('omxplayer -o local ../sounds/girl-talk.mp3');
+    proc = spawn('omxplayer -o local /home/pi/electro-pony/sounds/girl-talk.mp3');
 
     proc.stdout.on('data', function (data) {
       console.log('stdout: ' + data);
