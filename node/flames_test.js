@@ -1,7 +1,8 @@
 var Canvas = require('canvas'),
     Image = Canvas.Image,
     canvas = new Canvas(800, 400),
-    ctx = canvas.getContext('2d');
+    ctx = canvas.getContext('2d'),
+    fs = require('fs');
 
 console.log("Trying to read file");
 
