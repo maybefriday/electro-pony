@@ -63,3 +63,5 @@ Fireplace.prototype._draw = function() {
 
   this.opc.writePixels();
 }
+
+module.exports = Fireplace;
