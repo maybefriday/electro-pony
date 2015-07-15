@@ -21,7 +21,7 @@ var Fireplace = function(opc, numStrips, ledsPerStrip)
     // Y values of each strip
 
     for (var i = 0; i < this.numStrips; i++) {
-      this.stripYs[i] = canvas.height * (i+1) / (this.numStrips+1);
+      stripYs[i] = canvas.height * (i+1) / (this.numStrips+1);
     }
 
     // Load flame image
