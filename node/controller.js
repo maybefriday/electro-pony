@@ -41,7 +41,7 @@ function darkness(err, state) {
   if (state == 1) {
     cancelCurrentEffect();
 
-    for (int i = 0; i < (numStrips * ledsPerStrip); i++) {
+    for (var i = 0; i < (numStrips * ledsPerStrip); i++) {
       opc.setPixel(i, 0, 0, 0);
     }
 
