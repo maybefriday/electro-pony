@@ -2,7 +2,7 @@
 // LED: 25
 
 var OPC = new require('./opc'),
-    opc = new OPC('localhost', 7890),
+    opc = new OPC("electropony.local", 7890),
     GPIO = require('onoff').Gpio,
     Fireplace = require('./fireplace'),
     Rainbow = require('./rainbow'),
@@ -25,7 +25,7 @@ testSequence();
 
 function testSequence() {
   console.log("trying LED test sequence");
-  for (var i = 0; i < (numStrips * ledsPerStrip); i++) {
+  for (var i = 0; i < 192; i++) {
     opc.setPixel(i, 255, 255, 255);
   }
   opc.writePixels();

@@ -49,9 +49,11 @@ OPC.prototype._reconnect = function()
 OPC.prototype.writePixels = function()
 {
     if (!this.socket) {
+        console.log("Socket not connected... reconnecting");
         this._reconnect();
     }
     if (!this.connected) {
+        console.log("Couldn't reconnect, going away.");
         return;
     }
     this.socket.write(this.pixelBuffer);
