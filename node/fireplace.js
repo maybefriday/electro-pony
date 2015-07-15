@@ -6,7 +6,8 @@ var Canvas = require('canvas'),
     img = new Image,
     startingX = 50,
     stripYs = [],
-    interval;
+    interval,
+    _this;
 
 
 var Fireplace = function(opc, numStrips, ledsPerStrip)
@@ -30,6 +31,8 @@ var Fireplace = function(opc, numStrips, ledsPerStrip)
       if (err) throw err;
       img.src = flames;
     });
+
+    _this = this;
 };
 
 Fireplace.prototype.go = function() {
@@ -51,17 +54,17 @@ Fireplace.prototype._draw = function() {
 
   // Get RGB data for each LED
 
-  for (var i = 0; i < ledsPerStrip; i++) {
+  for (var i = 0; i < _this.ledsPerStrip; i++) {
     var x =  startingX + (i * interval);
 
-    for (var j = 0; j < numStrips; j++) {
+    for (var j = 0; j < _this.numStrips; j++) {
       var rgb = context.getImageData(x, stripYs[j], 1, 1).data;
-      this.opc.setPixel(i + (ledsPerStrip * j), rgb[0], rgb[1], rgb[2]);
+      _this.opc.setPixel(i + (_this.ledsPerStrip * j), rgb[0], rgb[1], rgb[2]);
     }
 
   }
 
-  this.opc.writePixels();
+  _this.opc.writePixels();
 }
 
 module.exports = Fireplace;
