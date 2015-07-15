@@ -12,7 +12,7 @@ Rainbow.prototype.go = function() {
   return setInterval(this._draw, 100);
 }
 
-Fireplace.prototype._draw = function() {
+Rainbow.prototype._draw = function() {
 
     for (var i = 0; i < _this.numLeds; i++) {
       var d = new Date();
