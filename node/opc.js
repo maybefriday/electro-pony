@@ -33,10 +33,16 @@ OPC.prototype._reconnect = function()
         _this.connected = false;
     }
 
+    console.log("Connecting to port " + this.port + " on " + this.host);
+
     this.socket.connect(this.port, this.host, function() {
         console.log("Connected to " + _this.socket.remoteAddress);
         _this.connected = true;
         _this.socket.setNoDelay();
+    });
+
+    this.socket.on("error", function(data) {
+        console.log("Failed to connect: " + data);
     });
 }
 
