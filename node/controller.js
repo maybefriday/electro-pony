@@ -14,7 +14,7 @@ var OPC = new require('./opc'),
     intervalId = -1;
     numStrips = 3,
     ledsPerStrip = 60,
-    proc;
+    proc = null;
 
 button1.watch(showFireplace);
 button2.watch(showRainbow);
