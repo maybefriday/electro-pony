@@ -10,7 +10,7 @@ var OPC = new require('./opc'),
     button2 = new GPIO(23, 'in', 'both'),
     button3 = new GPIO(22, 'in', 'both'),
     button4 = new GPIO(18, 'in', 'both'),
-    exec = require('child_process').exec,
+    spawn = require('child_process').spawn,
     intervalId = -1;
     numStrips = 3,
     ledsPerStrip = 60,
@@ -43,12 +43,12 @@ function playSong(err, state) {
   if (state == 1) {
     console.log("Playing a song.");
 
-    child = exec('omxplayer -o local /home/pi/electro-pony/sounds/girl-talk.mp3',
+    child = spawn('omxplayer -o local /home/pi/electro-pony/sounds/girl-talk.mp3',
       function (error, stdout, stderr) {
         console.log('stdout: ' + stdout);
         console.log('stderr: ' + stderr);
         if (error !== null) {
-          console.log('exec error: ' + error);
+          console.log('spawn error: ' + error);
         }
     });
   }
