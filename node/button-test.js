@@ -5,19 +5,11 @@ var GPIO = require('onoff').Gpio,
 
 var GpioStream = require('gpio-stream');
 
-// Buttons: 18, 22, 23, 24
-// LED: 25
 
 var button1 = GpioStream.readable(18);
-    //button2 = GpioStream.readable(22),
-    //button3 = GpioStream.readable(23),
-    //button4 = GpioStream.readable(24);
 
 // pipe the button presses to stdout
 button1.pipe(process.stdout);
-//button2.pipe(process.stdout);
-//button3.pipe(process.stdout);
-//button4.pipe(process.stdout);
 
 // define the callback function
 function light(err, state) {
@@ -34,6 +26,26 @@ function light(err, state) {
 
 }
 
-// pass the callback function to the
-// as the first argument to watch()
-button.watch(light);
+function updateBrightness(err, state) {
+
+  // check the state of the button
+  // 1 == pressed, 0 == not pressed
+  if(state == 1) {
+    // turn LED on
+    led.writeSync(1);
+
+    // Make LED strips brighter while button is pressed
+    brightness = 0.9;
+
+  } else {
+    // turn LED off
+    led.writeSync(0);
+
+    // Return the LEDs to dimmer level
+    brightness = 0.3;
+  }
+
+}
+
+button.watch(updateBrightness);
+

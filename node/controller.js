@@ -5,7 +5,7 @@ var OPC = new require('./opc'),
     opc = new OPC('localhost', 7890),
     GPIO = require('onoff').Gpio,
     Fireplace = require('./fireplace'),
-    //Rainbow = require('./rainbow'),
+    Rainbow = require('./rainbow'),
     button1 = new GPIO(24, 'in', 'both'),
     button2 = new GPIO(23, 'in', 'both'),
     button3 = new GPIO(22, 'in', 'both'),
@@ -32,6 +32,8 @@ function showRainbow(err, state) {
   if (state == 1) {
     cancelCurrentEffect();
     console.log("Turning on rainbows!");
+    var rainbow = new Rainbow(opc, numStrips * ledsPerStrip);
+    intervalId = rainbow.go();
   }
 }
 
@@ -49,12 +51,12 @@ function showDarkness(err, state) {
     for (var i = 0; i < (numStrips * ledsPerStrip); i++) {
       opc.setPixel(i, 0, 0, 0);
     }
-
+    opc.writePixels();
   }
 }
 
 function cancelCurrentEffect() {
-  console.log("canceling current effect");
+  console.log("canceling current effect with interval id " + intervalId);
   if (intervalId != -1)
     clearInterval(intervalId);
 }
