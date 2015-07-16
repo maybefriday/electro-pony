@@ -93,10 +93,11 @@ function killMusic() {
 
     // Ideally we'd kill the child process, but this doesn't seem to work on
     // the pi with omxplayer, for some reason.
-    exec('pkill omxplayer', function(err, stdout, stderr){
-      if (stdout){console.log('stdout:'+stdout);
-      if (stderr){console.log('stderr:'+stderr);
-      if (err){throw err;}
+    exec('pkill omxplayer',
+      function(err, stdout, stderr) {
+        if (stdout) { console.log('stdout:' + stdout);
+        if (stderr) { console.log('stderr:' + stderr);
+        if (err) { throw err; }
     });
 
   }
