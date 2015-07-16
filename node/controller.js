@@ -21,7 +21,7 @@ button2.watch(showRainbow);
 button3.watch(playSong);
 button4.watch(shutItDown);
 
-testSequence();
+showFireplace(null, 1);
 
 function testSequence() {
   console.log("trying LED test sequence");
@@ -89,16 +89,16 @@ function killLights() {
 
 function killMusic() {
   if (child != null) {
-    console.log("Turning off song process with pid " + child.pid);
-    exec('kill ' + child.pid,
-      function (error, stdout, stderr) {
-        console.log('stdout: ' + stdout);
-        console.log('stderr: ' + stderr);
-        if (error !== null) {
-          console.log('exec error: ' + error);
-        }
-    });
-    child = null;
+    console.log("Turning off omxplayer");
+
+    // Ideally we'd kill the child process, but this doesn't seem to work on
+    // the pi with omxplayer, for some reason.
+    exec('pkill omxplayer', function(err, stdout, stderr){
+      if (stdout){console.log('stdout:'+stdout);
+      if (stderr){console.log('stderr:'+stderr);
+      if (err){throw err;}
+    }
+
   }
 }
 
