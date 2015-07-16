@@ -97,7 +97,7 @@ function killMusic() {
       if (stdout){console.log('stdout:'+stdout);
       if (stderr){console.log('stderr:'+stderr);
       if (err){throw err;}
-    }
+    });
 
   }
 }
