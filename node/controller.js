@@ -95,9 +95,9 @@ function killMusic() {
     // the pi with omxplayer, for some reason.
     exec('pkill omxplayer',
       function(err, stdout, stderr) {
-        if (stdout) { console.log('stdout:' + stdout);
-        if (stderr) { console.log('stderr:' + stderr);
-        if (err) { throw err; }
+        if (stdout) console.log('stdout:' + stdout);
+        if (stderr) console.log('stderr:' + stderr);
+        if (err) throw err;
     });
 
   }
