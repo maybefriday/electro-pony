@@ -55,7 +55,7 @@ function playSong(err, state) {
 
     killMusic();
 
-    child = exec('omxplayer -o local /home/pi/electro-pony/sounds/girl-talk.mp3',
+    child = exec('omxplayer -o local /home/pi/electro-pony/sounds/pony.mp3',
       function (error, stdout, stderr) {
         console.log('stdout: ' + stdout);
         console.log('stderr: ' + stderr);
